@@ -267,6 +267,8 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
 
         options.add_argument("--remote-debugging-host=%s" % debug_host)
         options.add_argument("--remote-debugging-port=%s" % debug_port)
+        self.debug_port = debug_port
+        self.debug_host = debug_host
 
         if user_data_dir:
             options.add_argument('--user-data-dir=%s' % user_data_dir)
