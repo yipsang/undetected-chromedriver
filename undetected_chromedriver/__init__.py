@@ -38,6 +38,7 @@ import selenium.webdriver.chrome.webdriver
 import selenium.webdriver.common.service
 import selenium.webdriver.remote.webdriver
 import selenium.webdriver.remote.command
+from selenium.webdriver.chrome.service import Service
 
 from .cdp import CDP
 from .options import ChromeOptions
@@ -110,6 +111,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
         enable_cdp_events=False,
         service_args=None,
         desired_capabilities=None,
+        service_creationflags=None,
         advanced_elements=False,
         service_log_path=None,
         keep_alive=True,
@@ -409,6 +411,14 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             )
             self.browser_pid = browser.pid
 
+        if service_creationflags:
+            service = Service(
+                patcher.executable_path, port, service_args, service_log_path
+            )
+            service.creationflags = service_creationflags
+        else:
+            service = None
+
         super(Chrome, self).__init__(
             executable_path=patcher.executable_path,
             port=port,
@@ -417,6 +427,7 @@ class Chrome(selenium.webdriver.chrome.webdriver.WebDriver):
             desired_capabilities=desired_capabilities,
             service_log_path=service_log_path,
             keep_alive=keep_alive,
+            service=service,
         )
 
         self.reactor = None
